@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "572313942621",
+    "project_id": "lofo-7d52e",
+    "storage_bucket": "lofo-7d52e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572313942621:android:1288ca231aefc0f380abb4",
+        "android_client_info": {
+          "package_name": "com.harika.backtoowner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC62wns0VYtaHcimn8f2P2xe2IlaVm-3kk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
