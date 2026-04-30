@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "572313942621",
-    "project_id": "lofo-7d52e",
-    "storage_bucket": "lofo-7d52e.firebasestorage.app"
+    "project_number": "779610731348",
+    "project_id": "crisislink-54c60",
+    "storage_bucket": "crisislink-54c60.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:572313942621:android:1288ca231aefc0f380abb4",
+        "mobilesdk_app_id": "1:779610731348:android:120051bb6bef22512b0ec1",
         "android_client_info": {
           "package_name": "com.harika.backtoowner"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC62wns0VYtaHcimn8f2P2xe2IlaVm-3kk"
+          "current_key": "AIzaSyCGGm7G51KmXWDTvIwdB8zv4jiZgodUxq4"
         }
       ],
       "services": {

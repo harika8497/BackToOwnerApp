@@ -67,16 +67,18 @@ public class LostItemsAdapter extends FirestoreRecyclerAdapter<LostItems, LostIt
         holder.date.setText(item.getDateLost());
 
         // Set an onClickListener for the card view
-        holder.itemView.setOnClickListener(v -> {
-            // Create an Intent to start the LostDetails activity
-            Intent intent = new Intent(context, LostDetails.class);
 
-            // Pass the itemId as an extra to the intent
-            intent.putExtra("itemId", item.getItemName());
+            holder.itemView.setOnClickListener(v -> {
 
-            // Start the LostDetails activity
-            context.startActivity(intent);
-        });
+                Intent intent = new Intent(context, LostDetails.class);
+
+                String docId = getSnapshots().getSnapshot(position).getId(); // 🔥 correct ID
+
+                intent.putExtra("docId", docId); // 🔥 FIX
+
+                context.startActivity(intent);
+            });
+
             if (showDeleteButton && (category.isEmpty() || item.getCategory().equals(category))) {
                 // Additional logic for the delete button
                 holder.deleteButton.setVisibility(View.VISIBLE);

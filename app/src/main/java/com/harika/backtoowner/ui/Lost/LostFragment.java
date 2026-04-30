@@ -102,36 +102,44 @@ public class LostFragment extends Fragment {
 
     void setupRecyclerView(){
         Query query;
+
         if (selectedCategory.isEmpty()) {
-            query = Utility.getCollectionReferrenceForItems2().orderBy("dateLost", Query.Direction.DESCENDING);
+            query = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                    .collection("lost_items")
+                    .orderBy("dateLost", Query.Direction.DESCENDING);
         } else {
-            query = Utility.getCollectionReferrenceForItems2().whereEqualTo("category", selectedCategory)
+            query = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                    .collection("lost_items")
+                    .whereEqualTo("category", selectedCategory)
                     .orderBy("dateLost", Query.Direction.DESCENDING);
         }
+
+        // Debug (optional but useful)
         query.get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                 Log.d("LostFragment", "Document ID: " + documentSnapshot.getId());
-                // Log other fields to ensure that the data is retrieved correctly
             }
         }).addOnFailureListener(e -> {
             Log.e("LostFragment", "Error fetching data: " + e.getMessage());
         });
 
-        FirestoreRecyclerOptions<LostItems> options = new FirestoreRecyclerOptions.Builder<LostItems>()
-                .setQuery(query, LostItems.class).build();
+        FirestoreRecyclerOptions<LostItems> options =
+                new FirestoreRecyclerOptions.Builder<LostItems>()
+                        .setQuery(query, LostItems.class)
+                        .build();
 
-        // Reinitialize the adapter only if it is null or the category has changed
         if (adapter == null || !adapter.getCategory().equals(selectedCategory)) {
             if (adapter != null) {
                 adapter.stopListening();
             }
 
-            adapter = new LostItemsAdapter(options, requireContext(), selectedCategory,false);
+            adapter = new LostItemsAdapter(options, requireContext(), selectedCategory, false);
             adapter.setCategory(selectedCategory);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
             recyclerView.setAdapter(adapter);
             adapter.startListening();
+
         } else {
             adapter.updateOptions(options);
         }

@@ -125,6 +125,8 @@ public class FoundItemsFragment extends DialogFragment {
 
         submitButton.setOnClickListener(v -> {
 
+            Log.d(TAG, "STEP 1: Button clicked");
+
             EditText item =  view.findViewById(R.id.item_name_edittext);
             String itemName =  item.getText().toString();
 
@@ -137,7 +139,7 @@ public class FoundItemsFragment extends DialogFragment {
             }
 
             // Check if category is selected
-            if (selectedCategory[0] == null) {
+            if (selectedCategory[0].equals("Select Category")) {
                 Utility.showToast(getContext(), "Please select a category");
                 return;
             }
@@ -215,53 +217,24 @@ public class FoundItemsFragment extends DialogFragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         return "image_" + timeStamp + ".jpg";
     }
-    private void saveImageToFirebaseStorage(Uri imageUri, OnImageUploadCallback callback) {
-
-        String imageName = generateImageName();
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("foundImages/" + imageName);
-
-        storageReference.putFile(imageUri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                        String imageUrl = uri.toString();
-                        callback.onSuccess(imageUrl);
-                    });
-                })
-                .addOnFailureListener(e -> {
-                    // Handle any errors that may occur during the upload
-                    callback.onFailure();
-                });
-    }
-
-
     private void saveItemToFirebase(FoundItems item) {
-        try {
-            saveImageToFirebaseStorage(imageUri, new OnImageUploadCallback() {
-                @Override
-                public void onSuccess(String imageUrl) {
-                    item.setImageURI(imageUrl);
-                    DocumentReference documentReference = Utility.getCollectionReferrenceForFound().document();
-                    documentReference.set(item).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Utility.showToast(getContext(), "Item added successfully");
-                            dismiss();
-                        } else {
-                            Utility.showToast(getContext(), "Failed to add item");
-                            dismiss();
-                        }
-                    });
-                }
 
-                @Override
-                public void onFailure() {
-                    Utility.showToast(getContext(), "An error occurred while uploading the image");
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Utility.showToast(getContext(), "An error occurred while saving data");
-        }
+        item.setImageURI(null); // disable image
+
+        DocumentReference documentReference =
+                Utility.getCollectionReferrenceForFound().document();
+
+        documentReference.set(item).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Utility.showToast(getContext(), "Item added successfully");
+                dismiss();
+            } else {
+                Utility.showToast(getContext(), "Failed to add item");
+            }
+        });
     }
+
+
 
 
     @Override
